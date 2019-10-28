@@ -138,7 +138,8 @@ class _WidgetSpanDemoState extends State<WidgetSpanDemo> {
             child: ExtendedTextField(
               controller: controller2,
               maxLines: null,
-              specialTextSpanBuilder: MySpecialTextSpanBuilder(),
+              specialTextSpanBuilder:
+                  MySpecialTextSpanBuilder(controller: controller2),
               decoration: InputDecoration(
                   border: InputBorder.none, contentPadding: EdgeInsets.all(10)),
             ),

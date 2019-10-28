@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 ///emoji/image text
 class EmojiText extends SpecialText {
+  final TextEditingController controller;
   static const String flag = "[";
   final int start;
-  EmojiText(TextStyle textStyle, {this.start})
+  EmojiText(TextStyle textStyle, {this.start, this.controller})
       : super(EmojiText.flag, "]", textStyle);
 
   @override
@@ -25,7 +26,9 @@ class EmojiText extends SpecialText {
           imageHeight: size,
           start: start,
           fit: BoxFit.fill,
-          margin: EdgeInsets.only(left: 2.0, right: 2.0));
+          margin: EdgeInsets.only(left: 2.0, right: 2.0), onTap: () {
+        controller.selection = TextSelection.collapsed(offset: start);
+      });
     }
 
     return TextSpan(text: toString(), style: textStyle);

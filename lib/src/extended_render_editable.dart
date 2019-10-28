@@ -1514,33 +1514,46 @@ class ExtendedRenderEditable extends ExtendedTextRenderBox
     assert(cause != null);
     _layoutText(constraints.maxWidth);
     assert(_lastTapDownPosition != null);
+    TextSelection nextSelection;
     if (onSelectionChanged != null) {
-      final TextPosition position = _textPainter.getPositionForOffset(
-          globalToLocal(_lastTapDownPosition - _paintOffset));
-
-      final TextRange word = _textPainter.getWordBoundary(position);
-      TextSelection selection;
-
-      ///zmt
-      if (position.offset - word.start <= 1) {
-        selection = handleSpecialText
-            ? convertTextPainterSelectionToTextInputSelection(
-                text,
-                TextSelection.collapsed(
-                    offset: word.start, affinity: TextAffinity.downstream))
-            : TextSelection.collapsed(
-                offset: word.start, affinity: TextAffinity.downstream);
-      } else {
-        selection = handleSpecialText
-            ? convertTextPainterSelectionToTextInputSelection(
-                text,
-                TextSelection.collapsed(
-                    offset: word.end, affinity: TextAffinity.upstream))
-            : TextSelection.collapsed(
-                offset: word.end, affinity: TextAffinity.upstream);
+      Offset offset = globalToLocal(_lastTapDownPosition - _paintOffset);
+      int tappedSpanIndex = -1;
+      for (int i = 0; i < _textPainter.inlinePlaceholderBoxes.length; i++) {
+        ui.TextBox box = _textPainter.inlinePlaceholderBoxes[i];
+        if (box.toRect().contains(offset)) {
+          tappedSpanIndex = i;
+          break;
+        }
       }
+
+      if (tappedSpanIndex != -1) {
+        nextSelection = _selection;
+      } else {
+        final TextPosition position = _textPainter.getPositionForOffset(offset);
+        final TextRange word = _textPainter.getWordBoundary(position);
+
+        ///zmt
+        if (position.offset - word.start <= 1) {
+          nextSelection = handleSpecialText
+              ? convertTextPainterSelectionToTextInputSelection(
+                  text,
+                  TextSelection.collapsed(
+                      offset: word.start, affinity: TextAffinity.downstream))
+              : TextSelection.collapsed(
+                  offset: word.start, affinity: TextAffinity.downstream);
+        } else {
+          nextSelection = handleSpecialText
+              ? convertTextPainterSelectionToTextInputSelection(
+                  text,
+                  TextSelection.collapsed(
+                      offset: word.end, affinity: TextAffinity.upstream))
+              : TextSelection.collapsed(
+                  offset: word.end, affinity: TextAffinity.upstream);
+        }
+      }
+
       _handlePotentialSelectionChange(
-        selection,
+        nextSelection,
         cause,
       );
     }

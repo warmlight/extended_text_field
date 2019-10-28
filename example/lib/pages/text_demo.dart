@@ -34,8 +34,7 @@ class _TextDemoState extends State<TextDemo> {
       _myExtendedMaterialTextSelectionControls =
       MyExtendedMaterialTextSelectionControls();
   final GlobalKey _key = GlobalKey();
-  MySpecialTextSpanBuilder _mySpecialTextSpanBuilder =
-      MySpecialTextSpanBuilder();
+  MySpecialTextSpanBuilder _mySpecialTextSpanBuilder;
 
   List<TuChongItem> images = List<TuChongItem>();
 
@@ -70,6 +69,8 @@ class _TextDemoState extends State<TextDemo> {
   @override
   void initState() {
     tuChongRepository = TuChongRepository();
+    _mySpecialTextSpanBuilder =
+        MySpecialTextSpanBuilder(controller: _textEditingController);
   }
 
   @override
@@ -153,8 +154,7 @@ class _TextDemoState extends State<TextDemo> {
           ExtendedTextField(
             key: _key,
             specialTextSpanBuilder: MySpecialTextSpanBuilder(
-              showAtBackground: true,
-            ),
+                showAtBackground: true, controller: _textEditingController),
             controller: _textEditingController,
             textSelectionControls: _myExtendedMaterialTextSelectionControls,
             maxLines: null,

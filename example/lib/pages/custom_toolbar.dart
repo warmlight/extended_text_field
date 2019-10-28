@@ -21,13 +21,19 @@ class _CustomToolBarState extends State<CustomToolBar> {
   MyExtendedMaterialTextSelectionControls
       _myExtendedMaterialTextSelectionControls =
       MyExtendedMaterialTextSelectionControls();
-  MySpecialTextSpanBuilder _mySpecialTextSpanBuilder =
-      MySpecialTextSpanBuilder();
   TextEditingController controller = TextEditingController()
     ..text =
         "[33]Extended text field help you to build rich text quickly. any special text you will have with extended text. this is demo to show how to create custom toolbar and handles."
             "\n\nIt's my pleasure to invite you to join \$FlutterCandies\$ if you want to improve flutter .[36]"
             "\n\nif you meet any problem, please let me konw @zmtzawqlp .[44]";
+  MySpecialTextSpanBuilder _mySpecialTextSpanBuilder;
+
+  @override
+  void initState() {
+    super.initState();
+    _mySpecialTextSpanBuilder =
+        MySpecialTextSpanBuilder(controller: controller);
+  }
 
   @override
   Widget build(BuildContext context) {
