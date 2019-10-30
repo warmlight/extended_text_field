@@ -494,7 +494,7 @@ class ExtendedTextField extends StatefulWidget {
   /// {@macro flutter.widgets.editableText.scrollController}
   final ScrollController scrollController;
   @override
-  _ExtendedTextFieldState createState() => _ExtendedTextFieldState();
+  ExtendedTextFieldState createState() => ExtendedTextFieldState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -567,7 +567,7 @@ class ExtendedTextField extends StatefulWidget {
   }
 }
 
-class _ExtendedTextFieldState extends State<ExtendedTextField>
+class ExtendedTextFieldState extends State<ExtendedTextField>
     with AutomaticKeepAliveClientMixin {
   final GlobalKey<ExtendedEditableTextState> _editableTextKey =
       GlobalKey<ExtendedEditableTextState>();
@@ -779,11 +779,11 @@ class _ExtendedTextFieldState extends State<ExtendedTextField>
     return splash;
   }
 
-  ExtendedRenderEditable get _renderEditable =>
+  ExtendedRenderEditable get renderEditable =>
       _editableTextKey.currentState.renderEditable;
 
   void _handleTapDown(TapDownDetails details) {
-    _renderEditable.handleTapDown(details);
+    renderEditable.handleTapDown(details);
     _startSplash(details.globalPosition);
     // The selection overlay should only be shown when the user is interacting
     // through a touch screen (via either a finger or a stylus). A mouse shouldn't
@@ -797,7 +797,7 @@ class _ExtendedTextFieldState extends State<ExtendedTextField>
 
   void _handleForcePressStarted(ForcePressDetails details) {
     if (widget.selectionEnabled) {
-      _renderEditable.selectWordsInRange(
+      renderEditable.selectWordsInRange(
         from: details.globalPosition,
         cause: SelectionChangedCause.forcePress,
       );
@@ -811,11 +811,11 @@ class _ExtendedTextFieldState extends State<ExtendedTextField>
     if (widget.selectionEnabled) {
       switch (Theme.of(context).platform) {
         case TargetPlatform.iOS:
-          _renderEditable.selectWordEdge(cause: SelectionChangedCause.tap);
+          renderEditable.selectWordEdge(cause: SelectionChangedCause.tap);
           break;
         case TargetPlatform.android:
         case TargetPlatform.fuchsia:
-          _renderEditable.selectPosition(cause: SelectionChangedCause.tap);
+          renderEditable.selectPosition(cause: SelectionChangedCause.tap);
           break;
       }
     }
@@ -832,14 +832,14 @@ class _ExtendedTextFieldState extends State<ExtendedTextField>
     if (widget.selectionEnabled) {
       switch (Theme.of(context).platform) {
         case TargetPlatform.iOS:
-          _renderEditable.selectPositionAt(
+          renderEditable.selectPositionAt(
             from: details.globalPosition,
             cause: SelectionChangedCause.longPress,
           );
           break;
         case TargetPlatform.android:
         case TargetPlatform.fuchsia:
-          _renderEditable.selectWord(cause: SelectionChangedCause.longPress);
+          renderEditable.selectWord(cause: SelectionChangedCause.longPress);
           Feedback.forLongPress(context);
           break;
       }
@@ -851,14 +851,14 @@ class _ExtendedTextFieldState extends State<ExtendedTextField>
     if (widget.selectionEnabled) {
       switch (Theme.of(context).platform) {
         case TargetPlatform.iOS:
-          _renderEditable.selectPositionAt(
+          renderEditable.selectPositionAt(
             from: details.globalPosition,
             cause: SelectionChangedCause.longPress,
           );
           break;
         case TargetPlatform.android:
         case TargetPlatform.fuchsia:
-          _renderEditable.selectWordsInRange(
+          renderEditable.selectWordsInRange(
             from: details.globalPosition - details.offsetFromOrigin,
             to: details.globalPosition,
             cause: SelectionChangedCause.longPress,
@@ -891,13 +891,13 @@ class _ExtendedTextFieldState extends State<ExtendedTextField>
 
   void _handleDoubleTapDown(TapDownDetails details) {
     if (widget.selectionEnabled) {
-      _renderEditable.selectWord(cause: SelectionChangedCause.doubleTap);
+      renderEditable.selectWord(cause: SelectionChangedCause.doubleTap);
       _showToolbarForLongTapAndDoubleTap();
     }
   }
 
   void _handleMouseDragSelectionStart(DragStartDetails details) {
-    _renderEditable.selectPositionAt(
+    renderEditable.selectPositionAt(
       from: details.globalPosition,
       cause: SelectionChangedCause.drag,
     );
@@ -908,7 +908,7 @@ class _ExtendedTextFieldState extends State<ExtendedTextField>
     DragStartDetails startDetails,
     DragUpdateDetails updateDetails,
   ) {
-    _renderEditable.selectPositionAt(
+    renderEditable.selectPositionAt(
       from: startDetails.globalPosition,
       to: updateDetails.globalPosition,
       cause: SelectionChangedCause.drag,
